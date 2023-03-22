@@ -14,7 +14,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = "Bxsci2020"
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "kardashiandb"
+MYSQL_DATABASE = "hotels"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -27,8 +27,8 @@ CORS(app)
 # Sample search, the LIKE operator in this case is hard-coded, 
 # but if you decide to use SQLAlchemy ORM framework, 
 # there's a much better and cleaner way to do this
-def sql_search(episode):
-    query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
+def sql_search(hotels):
+    query_sql = f"""SELECT * FROM hotels WHERE id = 1;"""
     keys = ["id","title","descr"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])

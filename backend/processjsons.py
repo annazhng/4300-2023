@@ -6,6 +6,7 @@ def main():
     merge_jsons()
     keep_relevant_fields()
 
+#converts hotel txt file to json
 def hotels_to_json():
     open('hotels.json', 'w').close()
 
@@ -18,6 +19,7 @@ def hotels_to_json():
     with open('hotels.json', 'w') as f:
         json.dump(data, f)
 
+#converts reviews txt file to json
 def reviews_to_json():
     open('reviews.json', 'w').close()
 
@@ -30,36 +32,32 @@ def reviews_to_json():
     with open('reviews.json', 'w') as f:
         json.dump(data, f)
 
+#merges the two jsons according to their offering_id and id  
 def merge_jsons():
     open('merged_data.json', 'w').close()
 
-    # Load hotels data
     with open('hotels.json') as f:
         hotels_data = json.load(f)
 
-    # Load reviews data
     with open('reviews.json') as f:
         reviews_data = json.load(f)
 
-    # Merge data based on unique identifier
     merged_data = []
     for hotel in hotels_data:
         for review in reviews_data:
             if hotel['id'] == review['offering_id']:
                 merged_data.append({**hotel, **review})
 
-    # Write merged data to new JSON file
     with open('merged_data.json', 'w') as f:
         json.dump(merged_data, f)
 
+# narrow json down to only fields we are going to use 
 def keep_relevant_fields():
     open('relevant_fields.json', 'w').close()
 
-    # Read the original data from the file
     with open("merged_data.json") as file:
         original_data = json.load(file)
 
-    # The list of relevant fields
     relevant_fields = [
         "hotel_class",
         "region",
@@ -73,7 +71,6 @@ def keep_relevant_fields():
         "text"
     ]
 
-    # Extract the relevant fields from the original data
     relevant_data = []
     for data in original_data:
         new_data = {}
@@ -92,7 +89,6 @@ def keep_relevant_fields():
                     new_data[key] = value
         relevant_data.append(new_data)
     
-    # Write the relevant data to a new file
     with open("relevant_fields.json", "w") as file:
         json.dump(relevant_data, file)
 
