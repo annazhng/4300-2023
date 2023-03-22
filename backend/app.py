@@ -28,8 +28,8 @@ CORS(app)
 # but if you decide to use SQLAlchemy ORM framework, 
 # there's a much better and cleaner way to do this
 def sql_search(hotels):
-    query_sql = f"""SELECT * FROM hotels WHERE id = 1;"""
-    keys = ["id","title","descr"]
+    query_sql = f"""SELECT * FROM hotel_reviews WHERE id = 1;"""
+    keys = ["id","name","service", "cleanliness", "overall", "value", "location"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys,i)) for i in data])
 
@@ -37,9 +37,14 @@ def sql_search(hotels):
 def home():
     return render_template('base.html',title="sample html")
 
-@app.route("/episodes")
-def episodes_search():
-    text = request.args.get("title")
+@app.route("/hotel_reviews")
+def hotels_search():
+    text = request.args.get("name")
     return sql_search(text)
 
 # app.run(debug=True)
+
+#enter mysql shell
+#/usr/local/mysql/bin/mysql -uroot -p
+
+
