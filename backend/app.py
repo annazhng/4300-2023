@@ -44,7 +44,12 @@ def hotels_search():
 
 # app.run(debug=True)
 
-#enter mysql shell
+# enter mysql shell
 #/usr/local/mysql/bin/mysql -uroot -p
+
+# show contents of table
+# USE hotels;
+# SHOW TABLES;
+# SELECT * FROM hotel_reviews; 
 
 

@@ -1,6 +1,6 @@
 import os
 import sqlalchemy as db
-from sqlalchemy import create_engine, MetaData, Table, Column, Float, String, Integer, text
+from sqlalchemy import text
 import json
 
 class MySQLDatabaseHandler(object):
@@ -43,7 +43,6 @@ class MySQLDatabaseHandler(object):
         else:
             conn.execute(query)
         
-
     def query_selector(self,query):
         conn = self.lease_connection()
         data = conn.execute(query)

@@ -3,8 +3,6 @@ import json
 def main():
     txt_to_json('hotels.txt', 'hotels.json')
     txt_to_json('reviews.txt', 'reviews.json')
-    # hotels_to_json()
-    # reviews_to_json()
     merge_jsons()
     keep_relevant_fields()
 
@@ -18,30 +16,6 @@ def txt_to_json(file, output):
     with open(output, 'w') as f:
         json.dump(data, f)
     f.close()
-
-# #converts hotel txt file to json
-# def hotels_to_json():
-#     open('hotels.json', 'w').close()
-#     data = []
-#     with open('hotels.txt', 'r') as f:
-#         for line in f:
-#             json_data = json.loads(line.strip())
-#             data.append(json_data)
-#     with open('hotels.json', 'w') as f:
-#         json.dump(data, f)
-#     f.close()
-
-# #converts reviews txt file to json
-# def reviews_to_json():
-#     open('reviews.json', 'w').close()
-#     data = []
-#     with open('reviews.txt', 'r') as f:
-#         for line in f:
-#             json_data = json.loads(line.strip())
-#             data.append(json_data)
-#     with open('reviews.json', 'w') as f:
-#         json.dump(data, f)
-#     f.close()
 
 #merges the two jsons according to their offering_id and id  
 def merge_jsons():
