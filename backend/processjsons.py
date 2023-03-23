@@ -41,6 +41,7 @@ def keep_relevant_fields():
         original_data = json.load(file)
 
     relevant_fields = [
+        "name",
         "hotel_class",
         "region",
         "street-address",

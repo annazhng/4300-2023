@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS hotel_reviews;
 
 CREATE TABLE hotel_reviews (
   id INT,
+  name VARCHAR(255),
   hotel_class FLOAT,
   region VARCHAR(255),
   street_address VARCHAR(255),

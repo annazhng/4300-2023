@@ -32,7 +32,7 @@ class MySQLDatabaseHandler(object):
             data = json.load(f)
         for item in data:
             item = {k: v if v != '' else None for k, v in item.items()}
-            insert_query = text(f"INSERT INTO {table_name} (hotel_class, region, street_address, postal_code, \
+            insert_query = text(f"INSERT INTO {table_name} (name, hotel_class, region, street_address, postal_code, \
                                 locality, id, service, cleanliness, value, review_text) VALUES (:hotel_class, \
                                 :region, :streetaddress, :postalcode, :locality, :id, :service, :cleanliness, \
                                 :value, :text)")
