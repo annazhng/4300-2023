@@ -11,9 +11,9 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-MYSQL_USER = "root"
+'''MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = "SVfXg4AyAM7JRbzb@K45iKe9"
-# MYSQL_USER_PASSWORD = "Bxsci2020"
+MYSQL_USER_PASSWORD = "Bxsci2020"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -21,7 +21,7 @@ mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-mysql_engine.load_file_into_db()
+mysql_engine.load_file_into_db()'''
 
 app = Flask(__name__)
 CORS(app)
@@ -31,11 +31,12 @@ CORS(app)
 # there's a much better and cleaner way to do this
 
 
-def sql_search(episode):
+'''def sql_search(episode):
     query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
     keys = ["id", "title", "descr"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys, i)) for i in data])
+'''
 
 
 @app.route("/")
@@ -46,8 +47,8 @@ def home():
 @app.route("/episodes")
 def episodes_search():
     text = request.args.get("title")
-    return sql_search(text)
+    '''return sql_search(text)'''
 
 
-# COMMENT OUT THIS LINE WHEN DEPLOYING
-app.run(debug=True)
+
+ # app.run(debug=True)

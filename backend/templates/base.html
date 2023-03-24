@@ -22,30 +22,30 @@
                 <h1 id="google-3">L</h1>
                 <h1 id="google-0-1">P</h1>
                 <h1 id="google-0-2">E</h1>
-                <h1 id="google-0-2">R</h1>
+                <h1 id="google-c">R</h1>
             </div>
-            <form action="/results.html" method="get">
-                <div class="input">
-                    <input type="number" input placeholder="Minimum Service" id="service" onkeyup="filterText()">
-                    <input type="number" input placeholder="Minimum Cleanliness" id="clean" onkeyup="filterText()">
-                    <input type="number" input placeholder="Minimum Value" id="value" onkeyup="filterText()">
-                    <input type="submit" value="Submit">
-                </div>
-            </form>
+            <div class="inputs">
+                <input type="number" input placeholder="Minimum Service" id="service">
+                <input type="number" input placeholder="Minimum Cleanliness" id="clean">
+                <input type="number" input placeholder="Minimum Value" id="value">
+            </div>
+            <div class="submit-button">
+                <button id="submitButton" type="submit">Submit</button>
+            </div>
+            <div id="results">
+
+            </div>
         </div>
     </div>
 
     <script>
+
 
         function answerBoxTemplate(title, titleDesc) {
             return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
                 <p class='episode-desc'>${titleDesc}</p>
             </div>`
-        }
-
-        function sendFocus() {
-            document.getElementById('filter-text-val').focus()
         }
 
         function filterText() {
@@ -61,6 +61,24 @@
                 }));
 
         }
+
+        // Help on how to convert HTML fields to JSON from: 
+        // https://www.educative.io/answers/how-to-save-user-input-to-json-object-in-html
+        var service = document.getElementById("service")
+        var clean = document.getElementById("clean")
+        var value = document.getElementById("value")
+        var submitButton = document.getElementById("submitButton")
+        // jsonText contains the converted json
+        var jsonText = document.getElementById("jsonText")
+
+        submitButton.addEventListener("click", function () {
+            var data = {
+                "service": service.value,
+                "clean": clean.value,
+                "value": value.value
+            }
+            jsonText.innerHTML = JSON.stringify(data)
+        })
 
     </script>
 </body>
