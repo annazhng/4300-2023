@@ -39,9 +39,13 @@ CORS(app)
 '''
 
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def home():
-    return render_template('base.html', title="sample html")
+    service = request.args.get('service')
+    cleanliness = request.args.get('clean')
+    value = request.args.get('value')
+    valid_form = service and cleanliness and value
+    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form)
 
 
 @app.route("/episodes")

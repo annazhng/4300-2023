@@ -24,22 +24,23 @@
                 <h1 id="google-0-2">E</h1>
                 <h1 id="google-c">R</h1>
             </div>
-            <div class="inputs">
-                <input type="number" input placeholder="Minimum Service" id="service">
-                <input type="number" input placeholder="Minimum Cleanliness" id="clean">
-                <input type="number" input placeholder="Minimum Value" id="value">
-            </div>
-            <div class="submit-button">
-                <button id="submitButton" type="submit">Submit</button>
+            <form id="inputValues">
+                <div class="inputs">
+                    <input type="number" input placeholder="Minimum Service" name="service">
+                    <input type="number" input placeholder="Minimum Cleanliness" name="clean">
+                    <input type="number" input placeholder="Minimum Value" name="value">
+                </div>
+            </form>
+            <div class="submitButton">
+                <p class="pt-3"><button id="submitButton" form=inputValues type="submit">Submit</button></p>
             </div>
             <div id="results">
-                <p id="jsonText"></p>
-
+                {% if valid_form %}
+                <p>Service: {{ service }} <br> Cleanliness: {{ cleanliness }} <br> Value: {{ value }} </p>
                 <!-- Printing JSON into HTML: 
                     https://www.educative.io/answers/how-to-convert-json-to-html -->
                 <p id="hotels"></p>
                 <script>
-
                     var my_obj = [
                         {
                             "title": "Hotel1",
@@ -79,6 +80,10 @@
                     }
 
                 </script>
+
+                {% else %}
+                <p>Please fill out all fields.</p>
+                {% endif %}
             </div>
         </div>
     </div>
