@@ -1,5 +1,5 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Holiday Helper</title>
+<title>{% block title %}{% endblock %}Holiday Helper</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,52 @@
                 <button id="submitButton" type="submit">Submit</button>
             </div>
             <div id="results">
+                <p id="jsonText"></p>
 
+                <!-- Printing JSON into HTML: 
+                    https://www.educative.io/answers/how-to-convert-json-to-html -->
+                <p id="hotels"></p>
+                <script>
+
+                    var my_obj = [
+                        {
+                            "title": "Hotel1",
+                            "service": "4",
+                            "cleanliness": "3",
+                            "value": "4",
+                            "text": "This was a great hotel :)"
+                        },
+                        {
+                            "title": "Hotel2",
+                            "service": "2",
+                            "cleanliness": "5",
+                            "value": "3",
+                            "text": "I'm leaving a review here"
+                        },
+                        {
+                            "title": "Hotel3",
+                            "service": "4",
+                            "cleanliness": "2",
+                            "value": "4",
+                            "text": "Hello"
+                        }
+                    ];
+                    var json_to_html_tag = document.getElementById("hotels");
+                    var my_json = JSON.stringify(my_obj);
+                    var parsed_obj = JSON.parse(my_json);
+
+                    json_to_html_tag.innerHTML = ""
+                    for (i = 0; i < parsed_obj.length; i++) {
+                        json_to_html_tag.innerHTML +=
+                            "Hotel Name: " + parsed_obj[i].title +
+                            "<br>Service: " + parsed_obj[i].service +
+                            "<br>Cleanliness: " + parsed_obj[i].cleanliness +
+                            "<br>Value: " + parsed_obj[i].value +
+                            "<br>Text: " + parsed_obj[i].text +
+                            "<br><br>";
+                    }
+
+                </script>
             </div>
         </div>
     </div>
@@ -62,7 +107,7 @@
 
         }
 
-        // Help on how to convert HTML fields to JSON from: 
+        // How to convert HTML fields to JSON: 
         // https://www.educative.io/answers/how-to-save-user-input-to-json-object-in-html
         var service = document.getElementById("service")
         var clean = document.getElementById("clean")
