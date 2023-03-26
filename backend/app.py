@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "your password here!"
+MYSQL_USER_PASSWORD = "your own password"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -32,9 +32,9 @@ CORS(app)
 
 def sql_search(user_input):
     query_sql = f"""
-    SELECT hotel_name, avg(service),avg(cleanliness), avg(overall), avg(value), location
-    FROM reviews
-    GROUP BY hotel_name
+    SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
+    FROM hotel_reviews
+    GROUP BY name
     HAVING
         MIN(cleanliness) >= '%%{user_input['cleanliness']}%%' AND
         MIN(service) >= '%%{user_input['service']}%%' AND
@@ -42,8 +42,7 @@ def sql_search(user_input):
     ORDER BY (sum(cleanliness) + sum(service) + sum(value)) DESC
     LIMIT 10;
     """
-    keys = ["name", "service", "cleanliness",
-            "overall", "value", "location"]
+    keys = ["name", "service", "cleanliness", "value", "locality","review_text"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys, i)) for i in data])
 
