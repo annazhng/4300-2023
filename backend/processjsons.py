@@ -71,6 +71,12 @@ def keep_relevant_fields():
                 new_data["value"] = value.get("value")
             # else:
             #     new_data[key] = value
+        for key in relevant_fields:
+            if key not in new_data:
+                if key == "name":
+                    new_data['name'] = "PLACEHOLDER"
+                elif key == "hotel_class":
+                    new_data['hotel_class'] = -1.0
         relevant_data.append(new_data)
 
     with open("relevant_fields.json", "w") as file:
