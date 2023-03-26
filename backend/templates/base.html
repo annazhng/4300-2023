@@ -46,6 +46,7 @@
                     Value: {{ hotel_info['value'] }} <br>
                     Locality: {{ hotel_info['locality'] }} <br>
                     Review: {{ hotel_info['review_text'] }} </p>
+                {% endfor %}
                 {% else %}
                 <p>Please fill out all fields.</p>
                 {% endif %}
