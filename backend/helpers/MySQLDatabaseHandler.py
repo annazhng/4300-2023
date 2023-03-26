@@ -44,7 +44,8 @@ class MySQLDatabaseHandler(object):
         conn = self.lease_connection()
         if type(query) == list:
             for i in query:
-                conn.execute(i)
+                if not i.isspace():
+                    conn.execute(i)
         else:
             conn.execute(query)
 
