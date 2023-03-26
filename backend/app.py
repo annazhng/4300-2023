@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "your own password"
+MYSQL_USER_PASSWORD = "your password here :)"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -44,7 +44,7 @@ def sql_search(user_input):
     """
     keys = ["name", "service", "cleanliness", "value", "locality","review_text"]
     data = mysql_engine.query_selector(query_sql)
-    return json.dumps([dict(zip(keys, i)) for i in data])
+    return [dict(zip(keys, i)) for i in data]
 
 
 @app.route("/", methods=['GET'])
@@ -56,7 +56,7 @@ def home():
     output = ''
     if valid_form:
         user_input = {'cleanliness': cleanliness, 'service': service, 'value': value}
-        output = json.load(sql_search(user_input))
+        output = sql_search(user_input)
     return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form, output=output)
 
 

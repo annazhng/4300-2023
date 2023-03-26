@@ -62,8 +62,6 @@ class MySQLDatabaseHandler(object):
         sql_file = open(file_path, "r")
         sql_file_data = list(
             filter(lambda x: x != '', sql_file.read().split(";\n")))
-
-        self.insert_data_from_json('relevant_fields.json', 'hotel_reviews')
         self.query_executor(sql_file_data)
-        print('gang2')
+        self.insert_data_from_json('relevant_fields.json', 'hotel_reviews')
         sql_file.close()
