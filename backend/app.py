@@ -11,9 +11,8 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
-'''MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "SVfXg4AyAM7JRbzb@K45iKe9"
-MYSQL_USER_PASSWORD = "Bxsci2020"
+MYSQL_USER = "root"
+MYSQL_USER_PASSWORD = "your own password!"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -21,7 +20,7 @@ mysql_engine = MySQLDatabaseHandler(
     MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
-mysql_engine.load_file_into_db()'''
+mysql_engine.load_file_into_db()
 
 app = Flask(__name__)
 CORS(app)
@@ -31,12 +30,22 @@ CORS(app)
 # there's a much better and cleaner way to do this
 
 
-'''def sql_search(episode):
-    query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
-    keys = ["id", "title", "descr"]
+def sql_search(user_input):
+    query_sql = f"""
+    SELECT hotel_name, avg(service),avg(cleanliness), avg(overall), avg(value), location
+    FROM reviews
+    GROUP BY hotel_name
+    HAVING
+        MIN(cleanliness) >= '%%{user_input['cleanliness']}%%' AND
+        MIN(service) >= '%%{user_input['service']}%%' AND
+        MIN(value) >= '%%{user_input['value']}%%'
+    ORDER BY (sum(cleanliness) + sum(service) + sum(value)) DESC
+    LIMIT 10;
+    """
+    keys = ["name", "service", "cleanliness",
+            "overall", "value", "location"]
     data = mysql_engine.query_selector(query_sql)
     return json.dumps([dict(zip(keys, i)) for i in data])
-'''
 
 
 @app.route("/", methods=['GET'])
@@ -48,11 +57,17 @@ def home():
     return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form)
 
 
-@app.route("/episodes")
-def episodes_search():
-    text = request.args.get("title")
-    '''return sql_search(text)'''
+@app.route("/hotel_reviews")
+def hotels_search():
+    text = request.args.get("name")
+    return sql_search(text)
 
+# app.run(debug=True)
 
+# enter mysql shell
+# /usr/local/mysql/bin/mysql -uroot -p
 
- # app.run(debug=True)
+# show contents of table
+# USE hotels;
+# SHOW TABLES;
+# SELECT * FROM hotel_reviews;
