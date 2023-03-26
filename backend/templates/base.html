@@ -36,100 +36,20 @@
             </div>
             <div id="results">
                 {% if valid_form %}
-                <p>Service: {{ service }} <br> Cleanliness: {{ cleanliness }} <br> Value: {{ value }} </p>
-                <!-- Printing JSON into HTML: 
-                    https://www.educative.io/answers/how-to-convert-json-to-html -->
-                <p id="hotels"></p>
-                <script>
-                    var my_obj = [
-                        {
-                            "title": "Hotel1",
-                            "service": "4",
-                            "cleanliness": "3",
-                            "value": "4",
-                            "text": "This was a great hotel :)"
-                        },
-                        {
-                            "title": "Hotel2",
-                            "service": "2",
-                            "cleanliness": "5",
-                            "value": "3",
-                            "text": "I'm leaving a review here"
-                        },
-                        {
-                            "title": "Hotel3",
-                            "service": "4",
-                            "cleanliness": "2",
-                            "value": "4",
-                            "text": "Hello"
-                        }
-                    ];
-                    var json_to_html_tag = document.getElementById("hotels");
-                    var my_json = JSON.stringify(my_obj);
-                    var parsed_obj = JSON.parse(my_json);
-
-                    json_to_html_tag.innerHTML = ""
-                    for (i = 0; i < parsed_obj.length; i++) {
-                        json_to_html_tag.innerHTML +=
-                            "Hotel Name: " + parsed_obj[i].title +
-                            "<br>Service: " + parsed_obj[i].service +
-                            "<br>Cleanliness: " + parsed_obj[i].cleanliness +
-                            "<br>Value: " + parsed_obj[i].value +
-                            "<br>Text: " + parsed_obj[i].text +
-                            "<br><br>";
-                    }
-
-                </script>
-
+                <p>Service: {{ service }} <br>
+                    Cleanliness: {{ cleanliness }} <br>
+                    Value: {{ value }} </p>
+                {% for hotel_info in output %}
+                <p>Hotel Name: {{ hotel_info['name'] }} <br>
+                    Service: {{ hotel_info['service'] }} <br>
+                    Cleanliness: {{ hotel_info['cleanliness'] }} <br>
+                    Value: {{ hotel_info['value'] }} <br>
+                    Locality: {{ hotel_info['locality'] }} <br>
+                    Review: {{ hotel_info['review_text'] }} </p>
                 {% else %}
                 <p>Please fill out all fields.</p>
                 {% endif %}
             </div>
         </div>
     </div>
-
-    <script>
-
-
-        function answerBoxTemplate(title, titleDesc) {
-            return `<div class=''>
-                <h3 class='episode-title'>${title}</h3>
-                <p class='episode-desc'>${titleDesc}</p>
-            </div>`
-        }
-
-        function filterText() {
-            document.getElementById("answer-box").innerHTML = ""
-            console.log(document.getElementById("filter-text-val").value)
-            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-                .then((response) => response.json())
-                .then((data) => data.forEach(row => {
-
-                    let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
-                    document.getElementById("answer-box").appendChild(tempDiv)
-                }));
-
-        }
-
-        // How to convert HTML fields to JSON: 
-        // https://www.educative.io/answers/how-to-save-user-input-to-json-object-in-html
-        var service = document.getElementById("service")
-        var clean = document.getElementById("clean")
-        var value = document.getElementById("value")
-        var submitButton = document.getElementById("submitButton")
-        // jsonText contains the converted json
-        var jsonText = document.getElementById("jsonText")
-
-        submitButton.addEventListener("click", function () {
-            var data = {
-                "service": service.value,
-                "clean": clean.value,
-                "value": value.value
-            }
-            jsonText.innerHTML = JSON.stringify(data)
-
-        })
-
-    </script>
 </body>

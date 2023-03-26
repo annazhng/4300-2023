@@ -56,7 +56,7 @@ def home():
     output = ''
     if valid_form:
         user_input = {'cleanliness': cleanliness, 'service': service, 'value': value}
-        output = sql_search(user_input)
+        output = json.load(sql_search(user_input))
     return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form, output=output)
 
 
