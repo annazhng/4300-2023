@@ -26,9 +26,11 @@
             </div>
             <form id="inputValues">
                 <div class="inputs">
-                    <input type="number" input placeholder="Minimum Service" name="service">
-                    <input type="number" input placeholder="Minimum Cleanliness" name="clean">
-                    <input type="number" input placeholder="Minimum Value" name="value">
+                    <p>Minimum Service: </p><input type="number" step="0.01" min="0" max="5" name="service">
+                    <br>
+                    <p>Minimum Cleanliness: </p><input type="number" step="0.01" min="0" max="5" name="clean">
+                    <br>
+                    <p>Minimum Value: </p><input type="number" step="0.01" min="0" max="5" input name="value">
                 </div>
             </form>
             <div class="submitButton">

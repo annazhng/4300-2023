@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "your password here :)"
+MYSQL_USER_PASSWORD = "your password here"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -36,12 +36,26 @@ def sql_search(user_input):
     FROM hotel_reviews
     GROUP BY name
     HAVING
+        AVG(cleanliness) >= '%s' AND
+        AVG(service) >= '%s' AND
+        AVG(value) >= '%s'
+    ORDER BY (sum(cleanliness) + sum(service) + sum(value)) DESC
+    LIMIT 10;
+    """%(user_input['cleanliness'], user_input['service'], user_input['value'])
+
+    '''
+    query_sql = f"""
+    SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
+    FROM hotel_reviews
+    GROUP BY name
+    HAVING
         MIN(cleanliness) >= '%%{user_input['cleanliness']}%%' AND
         MIN(service) >= '%%{user_input['service']}%%' AND
         MIN(value) >= '%%{user_input['value']}%%'
     ORDER BY (sum(cleanliness) + sum(service) + sum(value)) DESC
     LIMIT 10;
-    """
+    """'''
+
     keys = ["name", "service", "cleanliness", "value", "locality","review_text"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys, i)) for i in data]
