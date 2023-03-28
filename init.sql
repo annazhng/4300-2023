@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS hotels;
 
-USE kardashiandb;
+USE hotels;
 
 DROP TABLE IF EXISTS hotel_reviews;
 
