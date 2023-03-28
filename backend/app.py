@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = ""
+MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -33,7 +33,7 @@ CORS(app)
 def sql_search(user_input):
     query_sql = f"""
     SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
-    FROM `hotel_reviews`
+    FROM hotel_reviews
     GROUP BY name
     HAVING
         AVG(cleanliness) >= '%s' AND
