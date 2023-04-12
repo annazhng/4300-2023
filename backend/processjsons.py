@@ -59,25 +59,34 @@ def keep_relevant_fields():
         new_data = {}
         for key, value in data.items():
             if key in relevant_fields:
-                new_data[key] = data.get(key)
+                if value != "" and value is not None: # check if the value is not empty or null
+                    new_data[key] = data.get(key)
             if key == "address":
-                new_data["region"] = value.get("region")
-                new_data["streetaddress"] = value.get("street-address")
-                new_data["postalcode"] = value.get("postal-code")
-                new_data["locality"] = value.get("locality")
+                if value.get("region") != "" and value.get("region") is not None:
+                    new_data["region"] = value.get("region")
+                if value.get("street-address") != "" and value.get("street-address") is not None:
+                    new_data["streetaddress"] = value.get("street-address")
+                if value.get("postal-code") != "" and value.get("postal-code") is not None:
+                    new_data["postalcode"] = value.get("postal-code")
+                if value.get("locality") != "" and value.get("locality") is not None:
+                    new_data["locality"] = value.get("locality")
             elif key == "ratings":
-                new_data["service"] = value.get("service")
-                new_data["cleanliness"] = value.get("cleanliness")
-                new_data["value"] = value.get("value")
+                if value.get("service") is not None:
+                    new_data["service"] = value.get("service")
+                if value.get("cleanliness") is not None:
+                    new_data["cleanliness"] = value.get("cleanliness")
+                if value.get("value") is not None:
+                    new_data["value"] = value.get("value")
             # else:
             #     new_data[key] = value
-        for key in relevant_fields:
-            if key not in new_data:
-                if key == "name":
-                    new_data['name'] = "PLACEHOLDER"
-                elif key == "hotel_class":
-                    new_data['hotel_class'] = -1.0
-        relevant_data.append(new_data)
+        # for key in relevant_fields:
+        #     if key not in new_data:
+        #         if key == "name":
+        #             new_data['name'] = "PLACEHOLDER"
+        #         elif key == "hotel_class":
+        #             new_data['hotel_class'] = -1.0
+        if len(new_data) > 0: # check if the new_data dictionary has any fields before appending
+            relevant_data.append(new_data)
 
     with open("relevant_fields.json", "w") as file:
         json.dump(relevant_data, file)
