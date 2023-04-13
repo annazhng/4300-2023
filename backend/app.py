@@ -61,12 +61,13 @@ def sql_search(user_input):
     keys = ["name", "service", "cleanliness", "value", "locality", "review_text"]
     data = mysql_engine.query_selector(query_sql)
     dataset = [dict(zip(keys, i)) for i in data]
-    jacc_scores = []
-    for rev in dataset: 
-        score = jaccard_sim(user_input["text"], rev['review_text'])
-        jacc_scores.append(score)
-    arg_sort = np.argsort(jacc_scores)
-    return [dataset[i] for i in arg_sort]
+    # jacc_scores = []
+    # for rev in dataset: 
+    #     score = jaccard_sim(user_input["text"], rev['review_text'])
+    #     jacc_scores.append(score)
+    # arg_sort = np.argsort(jacc_scores)
+    # return [dataset[i] for i in arg_sort]
+    return dataset
 
 
 @app.route("/", methods=['GET'])
