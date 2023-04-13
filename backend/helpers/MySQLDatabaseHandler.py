@@ -59,9 +59,9 @@ class MySQLDatabaseHandler(object):
             return
         if file_path is None:
             file_path = os.path.join(os.environ['ROOT_PATH'], 'init.sql')
-        sql_file = open(file_path, "r", encoding='utf-8')
-        sql_file_data = list(
-            filter(lambda x: x != '', sql_file.read().split(";\n")))
-        self.query_executor(sql_file_data)
-        # self.insert_data_from_json('relevant_fields.json', 'hotel_reviews')
-        sql_file.close()
+        # sql_file = open(file_path, "r", encoding='utf-8')
+        # sql_file_data = list(
+        #    filter(lambda x: x != '', sql_file.read().split(";\n")))
+        # self.query_executor(sql_file_data)
+        self.insert_data_from_json('relevant_fields.json', 'hotel_reviews')
+        # sql_file.close()

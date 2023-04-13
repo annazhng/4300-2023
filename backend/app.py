@@ -72,12 +72,16 @@ def home():
     service = request.args.get('service')
     cleanliness = request.args.get('clean')
     value = request.args.get('value')
+    locality = request.args.get('locality')
+    text = request.args.get('text')
     valid_form = service and cleanliness and value
     output = ''
     if valid_form:
-        user_input = {'cleanliness': cleanliness, 'service': service, 'value': value}
+        user_input = {'cleanliness': cleanliness, 'service': service,
+                      'value': value, 'locality': locality, 'text': text}
         output = sql_search(user_input)
-    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form, output=output)
+    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality,
+                           valid_form=valid_form, output=output, text=text)
 
 @app.route("/episodes")
 def episodes_search():
@@ -85,4 +89,12 @@ def episodes_search():
     return sql_search(text)
 
 
-# app.run(debug=True)
+# enter mysql shell
+# /usr/local/mysql/bin/mysql -uroot -p
+
+# show contents of table
+# USE hotels;
+# SHOW TABLES;
+# SELECT * FROM hotel_reviews;
+
+# SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
