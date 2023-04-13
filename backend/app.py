@@ -42,19 +42,19 @@ def sql_search(user_input):
     query_sql = f"""
     SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
     FROM hotel_reviews
+    WHERE locality = '%s'
     GROUP BY name
     HAVING
         AVG(cleanliness) >= '%s' AND
         AVG(service) >= '%s' AND
         AVG(value) >= '%s'
-    WHERE locality = '%s'
     ORDER BY (sum(cleanliness) + sum(service) + sum(value)) ASC
     LIMIT 100;
     """ % (
+        user_input['locality'],
         user_input["cleanliness"],
         user_input["service"],
-        user_input["value"],
-        user_input['locality']
+        user_input["value"]
     )
     keys = ["name", "service", "cleanliness", "value", "locality", "review_text"]
     data = mysql_engine.query_selector(query_sql)
