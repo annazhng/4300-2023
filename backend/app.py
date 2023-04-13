@@ -69,9 +69,9 @@ def home():
     valid_form = service and cleanliness and value
     output = ''
     if valid_form:
-        user_input = {'cleanliness': cleanliness, 'service': service, 'value': value}
+        user_input = {'cleanliness': cleanliness, 'service': service, 'value': value, 'locality' : locality}
         output = sql_search(user_input)
-    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form, output=output)
+    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality, valid_form=valid_form, output=output)
 
 
 @app.route("/hotel_reviews")

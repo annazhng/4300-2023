@@ -26,11 +26,23 @@
             </div>
             <form id="inputValues">
                 <div class="inputs">
+                    <label for="locality">Location:</label>
+                    <select name="locality" id="locality">
+                        <option 
+                        value = "new-york">New York City</option>
+                        <option 
+                        value = "los-angeles">Los Angeles</option>
+                        <option 
+                        value = "houston">Houston</option>
+                        <option 
+                        value = "chicago">Chicago</option>
+                    </select>
                     <p>Minimum Service: </p><input type="number" step="0.01" min="0" max="5" name="service">
                     <br>
                     <p>Minimum Cleanliness: </p><input type="number" step="0.01" min="0" max="5" name="clean">
                     <br>
                     <p>Minimum Value: </p><input type="number" step="0.01" min="0" max="5" input name="value">
+                    <p>Description: <input type = "text"></p>
                 </div>
             </form>
             <div class="submitButton">
@@ -38,7 +50,8 @@
             </div>
             <div id="results">
                 {% if valid_form %}
-                <p>Service: {{ service }} <br>
+                <p> Locality: {{ locality }} <br>
+                    Service: {{ service }} <br>
                     Cleanliness: {{ cleanliness }} <br>
                     Value: {{ value }} </p>
                 {% for hotel_info in output %}
