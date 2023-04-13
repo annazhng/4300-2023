@@ -39,6 +39,8 @@ def jaccard_sim(text1, text2):
     return len(intersection) / len(union)
 
 def sql_search(user_input):
+    if user_input['locality'] == 'new-york':
+        user_input['locality'] = 'New York City'
     query_sql = f"""
     SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
     FROM hotel_reviews
