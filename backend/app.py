@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+MYSQL_USER_PASSWORD = "your password here"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -66,12 +66,15 @@ def home():
     service = request.args.get('service')
     cleanliness = request.args.get('clean')
     value = request.args.get('value')
+    locality = request.args.get('locality')
+    text = request.args.get('text')
     valid_form = service and cleanliness and value
     output = ''
     if valid_form:
-        user_input = {'cleanliness': cleanliness, 'service': service, 'value': value}
+        user_input = {'cleanliness': cleanliness, 'service': service, 'value': value, 'locality': locality, 'text': text}
         output = sql_search(user_input)
-    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, valid_form=valid_form, output=output)
+    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality, 
+        valid_form=valid_form, output=output, text=text)
 
 
 @app.route("/hotel_reviews")
