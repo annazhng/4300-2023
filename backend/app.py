@@ -12,7 +12,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "your password here"
+MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "hotels"
 
@@ -41,7 +41,7 @@ def sql_search(user_input):
         AVG(value) >= '%s'
     ORDER BY (sum(cleanliness) + sum(service) + sum(value)) DESC
     LIMIT 10;
-    """%(user_input['cleanliness'], user_input['service'], user_input['value'])
+    """ % (user_input['cleanliness'], user_input['service'], user_input['value'])
 
     '''
     query_sql = f"""
@@ -56,7 +56,8 @@ def sql_search(user_input):
     LIMIT 10;
     """'''
 
-    keys = ["name", "service", "cleanliness", "value", "locality","review_text"]
+    keys = ["name", "service", "cleanliness",
+            "value", "locality", "review_text"]
     data = mysql_engine.query_selector(query_sql)
     return [dict(zip(keys, i)) for i in data]
 
@@ -71,10 +72,11 @@ def home():
     valid_form = service and cleanliness and value
     output = ''
     if valid_form:
-        user_input = {'cleanliness': cleanliness, 'service': service, 'value': value, 'locality': locality, 'text': text}
+        user_input = {'cleanliness': cleanliness, 'service': service,
+                      'value': value, 'locality': locality, 'text': text}
         output = sql_search(user_input)
-    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality, 
-        valid_form=valid_form, output=output, text=text)
+    return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality,
+                           valid_form=valid_form, output=output, text=text)
 
 
 @app.route("/hotel_reviews")
@@ -91,3 +93,5 @@ def hotels_search():
 # USE hotels;
 # SHOW TABLES;
 # SELECT * FROM hotel_reviews;
+
+# SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

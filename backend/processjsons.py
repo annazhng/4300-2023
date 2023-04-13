@@ -1,10 +1,12 @@
 import json
 
+
 def main():
     txt_to_json('hotels.txt', 'hotels.json')
     txt_to_json('reviews.txt', 'reviews.json')
     merge_jsons()
     keep_relevant_fields()
+
 
 def txt_to_json(file, output):
     open(output, 'w').close()
@@ -17,7 +19,9 @@ def txt_to_json(file, output):
         json.dump(data, f)
     f.close()
 
-#merges the two jsons according to their offering_id and id  
+# merges the two jsons according to their offering_id and id
+
+
 def merge_jsons():
     open('merged_data.json', 'w').close()
     with open('hotels.json') as f:
@@ -34,6 +38,8 @@ def merge_jsons():
     f.close()
 
 # narrow json down to only fields we are going to use
+
+
 def keep_relevant_fields():
     open('relevant_fields.json', 'w').close()
 
@@ -59,7 +65,7 @@ def keep_relevant_fields():
         new_data = {}
         for key, value in data.items():
             if key in relevant_fields:
-                if value != "" and value is not None: # check if the value is not empty or null
+                if value != "" and value is not None:  # check if the value is not empty or null
                     new_data[key] = data.get(key)
             if key == "address":
                 if value.get("region") != "" and value.get("region") is not None:
@@ -85,12 +91,13 @@ def keep_relevant_fields():
         #             new_data['name'] = "PLACEHOLDER"
         #         elif key == "hotel_class":
         #             new_data['hotel_class'] = -1.0
-        if len(new_data) > 0: # check if the new_data dictionary has any fields before appending
+        if len(new_data) == 11:  # check if the new_data dictionary has all fields before appending
             relevant_data.append(new_data)
 
     with open("relevant_fields.json", "w") as file:
         json.dump(relevant_data, file)
     file.close()
+
 
 if __name__ == "__main__":
     main()
