@@ -1,6 +1,7 @@
 import json
 import os
 import numpy as np
+import nltk
 from collections import defaultdict
 from nltk.tokenize import word_tokenize
 from flask import Flask, render_template, request
@@ -39,6 +40,7 @@ def jaccard_sim(text1, text2):
     return len(intersection) / len(union)
 
 def sql_search(user_input):
+    nltk.download('punkt')
     if user_input['locality'] == 'new-york':
         user_input['locality'] = 'New York City'
     query_sql = f"""
