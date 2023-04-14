@@ -37,7 +37,7 @@ def jaccard_sim(text1, text2):
     text2_set = set(word_tokenize(text2))
     intersection = len(text1_set.intersection(text2_set))
     union = len(text1_set.union(text2_set))
-    return len(intersection) / len(union)
+    return intersection / union
 
 def sql_search(user_input):
     nltk.download('punkt')
