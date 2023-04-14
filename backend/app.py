@@ -68,7 +68,7 @@ def sql_search(user_input):
         score = jaccard_sim(user_input["text"], rev['review_text'])
         jacc_scores.append(score)
     arg_sort = np.argsort(jacc_scores)
-    return [dataset[i] for i in arg_sort]
+    return [dataset[i] for i in arg_sort].reverse()
 
 
 @app.route("/", methods=['GET'])
