@@ -4,6 +4,7 @@ import numpy as np
 import nltk
 from collections import defaultdict
 from nltk.tokenize import word_tokenize
+from nltk.sentiment import SentimentIntensityAnalyzer
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
@@ -39,6 +40,20 @@ def jaccard_sim(text1, text2):
     union = len(text1_set.union(text2_set))
     return intersection / union
 
+nltk.download('punkt')
+nltk.download('vader_lexicon')
+sia = SentimentIntensityAnalyzer()
+
+#returns 1 if positive review, 0 if neutrial, -1 if negative 
+def sentiment_analysis(text):
+    score = sia.polarity_scores(text)
+    if score['compound'] >= 0.05:
+        return 1
+    elif score['compound'] <= -0.05:
+        return 0
+    else:
+        return -1
+
 def sql_search(user_input):
     nltk.download('punkt')
     if user_input['locality'] == 'new-york':
@@ -66,6 +81,9 @@ def sql_search(user_input):
     jacc_scores = []
     for rev in dataset: 
         score = jaccard_sim(user_input["text"], rev['review_text'])
+
+        sentiment = sentiment_analysis(rev["review_text"])
+        
         jacc_scores.append(score)
     arg_sort = np.argsort(jacc_scores)
     return [dataset[i] for i in arg_sort]
