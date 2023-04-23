@@ -50,9 +50,9 @@ def sentiment_analysis(text):
     if score['compound'] >= 0.05:
         return 1
     elif score['compound'] <= -0.05:
-        return 0
-    else:
         return -1
+    else:
+        return 0
 
 def sql_search(user_input):
     nltk.download('punkt')
@@ -81,9 +81,9 @@ def sql_search(user_input):
     jacc_scores = []
     for rev in dataset: 
         score = jaccard_sim(user_input["text"], rev['review_text'])
-
-        sentiment = sentiment_analysis(rev["review_text"])
         
+        sentiment = sentiment_analysis(rev["review_text"])
+
         jacc_scores.append(score)
     arg_sort = np.argsort(jacc_scores)
     return [dataset[i] for i in arg_sort]
