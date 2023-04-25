@@ -1,6 +1,7 @@
 <!doctype html>
 <title>{% block title %}{% endblock %}Holiday Helper</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
@@ -67,23 +68,9 @@
         <div class="top-text">
             <div class="container">
                 <div class="header">
-                    <img src="https://github.com/annazhng/holidayhelper/blob/master/backend/templates/umbrella.png?raw=true"
+                    <img src="https://github.com/annazhng/holidayhelper/blob/master/backend/static/images/umbrella.png?raw=true"
                         width=80px height=80px />
                     <h1>HOLIDAY HELPER</h1>
-                    <!-- <div class="google-colors"> -->
-                    <!-- <h1 id="google-c">H</h1>
-                    <h1 id="google-s">O</h1>
-                    <h1 id="google-4">L</h1>
-                    <h1 id="google-3">I</h1>
-                    <h1 id="google-0-1">D</h1>
-                    <h1 id="google-0-2">A</h1>
-                    <h1 id="google-c">Y</h1>
-                    <h1 id="google-s">H</h1>
-                    <h1 id="google-4">E</h1>
-                    <h1 id="google-3">L</h1>
-                    <h1 id="google-0-1">P</h1>
-                    <h1 id="google-0-2">E</h1>
-                    <h1 id="google-c">R</h1> -->
                 </div>
             </div>
         </div>
@@ -111,7 +98,26 @@
             <p class="pt-3"><button id="submitButton" form=inputValues type="submit">Submit</button></p>
         </div>
 
-        <div id="results">
+        <div class="resultsContainer">
+            {% if valid_form %}
+            <p> Locality: {{ locality }} <br>
+                Service: {{ service }} <br>
+                Cleanliness: {{ cleanliness }} <br>
+                Value: {{ value }} <br>
+                Text: {{ text }} </p>
+            {% for hotel_info in output %}
+            <div class="hotelCard">
+                <div id=resultName> Hotel Name: {{ hotel_info['name'] }}</div>
+                <div id=resultService> Service: {{ hotel_info['service'] }}</div>
+                <div id=resultClean> Cleanliness: {{ hotel_info['cleanliness'] }}</div>
+                <div id=resultValue> Value: {{ hotel_info['value'] }}</div>
+                <div id=resultLocality> Locality: {{ hotel_info['locality'] }}</div>
+                <div id=resultReview> Review: {{ hotel_info['review_text'] }}</div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <!--<div id="results">
             {% if valid_form %}
             <p> Locality: {{ locality }} <br>
                 Service: {{ service }} <br>
@@ -129,7 +135,7 @@
             {% else %}
             <p>Please fill out all fields.</p>
             {% endif %}
-        </div>
+        </div>-->
     </div>
     </div>
 </body>
