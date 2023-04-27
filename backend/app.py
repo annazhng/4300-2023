@@ -60,10 +60,16 @@ def word2vec_sim(text1, text2):
     
     vec1 = wv[tokens1[0]]
     for token in tokens1[1:]:
-        vec1 = vec1 + wv[token]
+        try:
+            vec1 = vec1 + wv[token]
+        except:
+            vec1 = vec1
     vec2 = wv[tokens2[0]]
     for token in tokens2[1:]:
-        vec2 = vec2 + wv[token]
+        try:
+            vec2 = vec2 + wv[token]
+        except:
+            vec2 = vec2
     vec1 = vec1 / len(tokens1)
     vec2 = vec2 / len(tokens2)
     return np.dot(vec1, vec2) / (np.linalg.norm(vec1)*np.linalg.norm(vec2))
