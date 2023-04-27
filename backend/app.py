@@ -59,7 +59,7 @@ def sql_search(user_input):
     if user_input['locality'] == 'new-york':
         user_input['locality'] = 'New York City'
     query_sql = f"""
-    SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
+    SELECT name, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
     WHERE locality = '%s'
     GROUP BY name
@@ -83,6 +83,7 @@ def sql_search(user_input):
         score = jaccard_sim(user_input["text"], rev['review_text'])
         
         sentiment = sentiment_analysis(rev["review_text"])
+        rev['sentiment'] = sentiment
 
         jacc_scores.append(score)
     arg_sort = np.argsort(jacc_scores)
@@ -98,17 +99,16 @@ def home():
     text = request.args.get('text')
     valid_form = service and cleanliness and value
     output = ''
+    outputLen = 0
     if valid_form:
         user_input = {'cleanliness': cleanliness, 'service': service,
                       'value': value, 'locality': locality, 'text': text}
         output = sql_search(user_input)
+        outputLen = len(output)
+        if text == '':
+            text = 'None'
     return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality,
-                           valid_form=valid_form, output=output, text=text)
-
-@app.route("/episodes")
-def episodes_search():
-    text = request.args.get("title")
-    return sql_search(text)
+                           valid_form=valid_form, output=output, text=text, outputLen=outputLen)
 
 
 # enter mysql shell
