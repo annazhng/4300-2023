@@ -22,3 +22,21 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.frownImage {
+  width: 3vw;
+  height: 3vw;
+  background-size: cover;
+}
+
+.neutralImage {
+  width: 3vw;
+  height: 3vw;
+  background-size: cover;
+}
+
+.smileImage {
+  width: 3vw;
+  height: 3vw;
+  background-size: cover;
+}

@@ -63,8 +63,7 @@
         <div class="top-text">
             <div class="container">
                 <div class="header">
-                    <img src="https://github.com/annazhng/holidayhelper/blob/master/backend/static/images/umbrella.png?raw=true"
-                        width=80px height=80px />
+                    <img src="../static/images/umbrella.png" width=80px height=80px />
                     <h1>HOLIDAY HELPER</h1>
                 </div>
             </div>
@@ -108,29 +107,17 @@
                 <div id=resultValue> Value: {{ hotel_info['value'] }}</div>
                 <div id=resultLocality> Locality: {{ hotel_info['locality'] }}</div>
                 <div id=resultReview> Review: {{ hotel_info['review_text'] }}</div>
+                {% if hotel_info['sentiment'] == -1 %}
+                <img src="../static/images/frown.png" class="frownImage" />
+                {% elif hotel_info['sentiment'] == 0 %}
+                <img src="../static/images/neutral.png" class="neutralImage" />
+                {% elif hotel_info['sentiment'] == 1 %}
+                <img src="../static/images/smile.png" class="smileImage" />
+                {% endif %}
             </div>
             {% endfor %}
             {% endif %}
         </div>
-        <!--<div id="results">
-            {% if valid_form %}
-            <p> Locality: {{ locality }} <br>
-                Service: {{ service }} <br>
-                Cleanliness: {{ cleanliness }} <br>
-                Value: {{ value }} <br>
-                Text: {{ text }} </p>
-            {% for hotel_info in output %}
-            <p>Hotel Name: {{ hotel_info['name'] }} <br>
-                Service: {{ hotel_info['service'] }} <br>
-                Cleanliness: {{ hotel_info['cleanliness'] }} <br>
-                Value: {{ hotel_info['value'] }} <br>
-                Locality: {{ hotel_info['locality'] }} <br>
-                Review: {{ hotel_info['review_text'] }} </p>
-            {% endfor %}
-            {% else %}
-            <p>Please fill out all fields.</p>
-            {% endif %}
-        </div>-->
     </div>
     </div>
 </body>
