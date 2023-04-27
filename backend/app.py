@@ -45,7 +45,7 @@ nltk.download('punkt')
 nltk.download('vader_lexicon')
 sia = SentimentIntensityAnalyzer()
 
-wv = api.load('word2vec-google-news-300')
+wv = api.load('glove-wiki-gigaword-50')
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
