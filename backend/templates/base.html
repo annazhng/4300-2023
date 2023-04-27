@@ -28,6 +28,7 @@
     }
 
     #preferences {
+        font-family:"Lucida Console, Monaco, monospace";
         width: 50%
     }
 
@@ -59,17 +60,18 @@
     .results {
         border: gray;
         border-width: 5px;
+        border-radius: 25px;
     }
 </style>
 
-<body>
+<body style="background-color:#E8FAFF;">
     <div class="full-body-container">
         <div class="top-text">
             <div class="container">
                 <div class="header">
                     <img src="https://github.com/annazhng/holidayhelper/blob/master/backend/templates/umbrella.png?raw=true"
                         width=80px height=80px />
-                    <h1>HOLIDAY HELPER</h1>
+                    <h1 style ="font-family:sans-serif; font-size:300%">HOLIDAY HELPER</h1>
                     <!-- <div class="google-colors"> -->
                     <!-- <h1 id="google-c">H</h1>
                     <h1 id="google-s">O</h1>
@@ -91,19 +93,19 @@
 
         <form id="inputValues">
             <div class="inputs">
-                <label for="locality">Location:</label>
+                <label for="locality" style="font-family:Lucida Console, Monaco, monospace;">Location:</label>
                 <select name="locality" id="locality">
                     <option value="New York City">New York City</option>
                     <option value="Los Angeles">Los Angeles</option>
                     <option value="Houston">Houston</option>
                     <option value="Chicago">Chicago</option>
                 </select>
-                <p>Please enter your minimum prefrences:</p>
+                <p style="font-family: Lucida Console, Monaco, monospace;">Please enter your minimum prefrences:</p>
                 <input id="preferences" type="number" step="0.01" min="0" max="5" name="service" placeholder="Service">
                 <input id="preferences" type="number" step="0.01" min="0" max="5" name="clean"
                     placeholder="Cleanliness">
                 <input id="preferences" type="number" step="0.01" min="0" max="5" name="value" placeholder="Value">
-                <p>Description: <input type="text" name="text"></p>
+                <p style="font-family: Lucida Console, Monaco, monospace";>Description: <input type="text" name="text"></p>
             </div>
         </form>
 
