@@ -59,7 +59,7 @@ def sql_search(user_input):
     if user_input['locality'] == 'new-york':
         user_input['locality'] = 'New York City'
     query_sql = f"""
-    SELECT name, avg(service),avg(cleanliness), avg(value), locality, review_text
+    SELECT name, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
     WHERE locality = '%s'
     GROUP BY name
