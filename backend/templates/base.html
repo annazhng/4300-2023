@@ -65,7 +65,7 @@
             <div class="container">
                 <div class="header">
                     <img src="../static/images/umbrella.png" width=80px height=80px />
-                    <h1 style="font-family:sans-serif; font-size:300%">HOLIDAY HELPER</h1>
+                    <h1 style="font-family:Lucida Console, Monaco, monospace; font-size:300%">HOLIDAY HELPER</h1>
                 </div>
             </div>
         </div>
@@ -96,23 +96,24 @@
 
         <div class="resultsContainer">
             {% if valid_form %}
-            <b> Locality: {{ locality }} |
+            <b class="resultText"> Locality: {{ locality }} |
                 Service: {{ service }} |
                 Cleanliness: {{ cleanliness }} |
                 Value: {{ value }} |
                 Descriptors: {{ text }} </b>
             {% if outputLen == 0 %}
-            <p> There were no results found. Try lowering the minimum ratings to get more results!</p>
+            <p class="resultText"> There were no results found. Try lowering the minimum ratings to get more results!
+            </p>
             <img src="../static/images/frown.png" class="frownImage" />
             {% else %}
             {% for hotel_info in output %}
             <div class="hotelCard">
-                <h2> Hotel: {{ hotel_info['name'] }} </h2>
-                <p> Service: {{ hotel_info['service'] }} </p>
-                <p> Cleanliness: {{ hotel_info['cleanliness'] }} </p>
-                <p> Value: {{ hotel_info['value'] }} </p>
-                <p> Locality: {{ hotel_info['locality'] }} </p>
-                <p> Review: {{ hotel_info['review_text'] }} </p>
+                <b class="resultText"> Hotel: {{ hotel_info['name'] }} </b>
+                <p class="resultText"> Service: {{ hotel_info['service'] }} </p>
+                <p class="resultText"> Cleanliness: {{ hotel_info['cleanliness'] }} </p>
+                <p class="resultText"> Value: {{ hotel_info['value'] }} </p>
+                <p class="resultText"> Locality: {{ hotel_info['locality'] }} </p>
+                <p class="resultText"> Review: {{ hotel_info['review_text'] }} </p>
                 {% if hotel_info['sentiment'] == -1 %}
                 <img src="../static/images/frown.png" class="frownImage" />
                 {% elif hotel_info['sentiment'] == 0 %}
