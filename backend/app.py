@@ -108,7 +108,7 @@ def sql_search(user_input):
 
         jacc_scores.append(score)
     arg_sort = np.argsort(jacc_scores)
-    arg_sort.reverse()
+    arg_sort = np.flip(arg_sort)
     return [dataset[i] for i in arg_sort]
 
 
