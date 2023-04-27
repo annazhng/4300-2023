@@ -2,7 +2,8 @@ import json
 import os
 import numpy as np
 import nltk
-from collections import defaultdict
+import gensim.downloader as api
+from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.sentiment import SentimentIntensityAnalyzer
 from flask import Flask, render_template, request
@@ -44,6 +45,29 @@ nltk.download('punkt')
 nltk.download('vader_lexicon')
 sia = SentimentIntensityAnalyzer()
 
+wv = api.load('word2vec-google-news-300')
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
+
+def word2vec_sim(text1, text2):
+    tokens1 = word_tokenize(text1)
+    tokens2 = word_tokenize(text2)
+    tokens1 = [w.lower() for w in tokens1 if not w.lower() in stop_words and w.isalpha()]
+    tokens2 = [w.lower() for w in tokens2 if not w.lower() in stop_words and w.isalpha()]
+
+    if len(tokens1) == 0 or len(tokens2) == 0:
+        return 0
+    
+    vec1 = wv[tokens1[0]]
+    for token in tokens1[1:]:
+        vec1 = vec1 + wv[token]
+    vec2 = wv[tokens2[0]]
+    for token in tokens2[1:]:
+        vec2 = vec2 + wv[token]
+    vec1 = vec1 / len(tokens1)
+    vec2 = vec2 / len(tokens2)
+    return np.dot(vec1, vec2) / (np.linalg.norm(vec1)*np.linalg.norm(vec2))
+
 #returns 1 if positive review, 0 if neutrial, -1 if negative 
 def sentiment_analysis(text):
     score = sia.polarity_scores(text)
@@ -55,9 +79,6 @@ def sentiment_analysis(text):
         return 0
 
 def sql_search(user_input):
-    nltk.download('punkt')
-    if user_input['locality'] == 'new-york':
-        user_input['locality'] = 'New York City'
     query_sql = f"""
     SELECT name, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
@@ -80,13 +101,14 @@ def sql_search(user_input):
     dataset = [dict(zip(keys, i)) for i in data]
     jacc_scores = []
     for rev in dataset: 
-        score = jaccard_sim(user_input["text"], rev['review_text'])
+        score = word2vec_sim(user_input["text"], rev['review_text'])
         
         sentiment = sentiment_analysis(rev["review_text"])
         rev['sentiment'] = sentiment
 
         jacc_scores.append(score)
     arg_sort = np.argsort(jacc_scores)
+    arg_sort.reverse()
     return [dataset[i] for i in arg_sort]
 
 
