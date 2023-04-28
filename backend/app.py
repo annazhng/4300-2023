@@ -49,30 +49,38 @@ wv = api.load('glove-wiki-gigaword-50')
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
-def word2vec_sim(text1, text2):
-    tokens1 = word_tokenize(text1)
-    tokens2 = word_tokenize(text2)
-    tokens1 = [w.lower() for w in tokens1 if not w.lower() in stop_words and w.isalpha()]
-    tokens2 = [w.lower() for w in tokens2 if not w.lower() in stop_words and w.isalpha()]
 
-    if len(tokens1) == 0 or len(tokens2) == 0:
-        return 0
-    
-    vec1 = wv[tokens1[0]]
+def doc2vec(text1):
+    tokens1 = word_tokenize(text1)
+    tokens1 = [w.lower() for w in tokens1 if not w.lower() in stop_words and w.isalpha()]
+    if len(tokens1) == 0:
+        return wv['a']
+    try:
+        vec1 = wv[tokens1[0]]
+    except:
+        vec1 = wv['a']
     for token in tokens1[1:]:
         try:
             vec1 = vec1 + wv[token]
         except:
             vec1 = vec1
-    vec2 = wv[tokens2[0]]
-    for token in tokens2[1:]:
-        try:
-            vec2 = vec2 + wv[token]
-        except:
-            vec2 = vec2
     vec1 = vec1 / len(tokens1)
-    vec2 = vec2 / len(tokens2)
+    return vec1
+
+def word2vec_sim(text1, text2):
+    vec1 = doc2vec(text1)
+    vec2 = doc2vec(text2)
     return np.dot(vec1, vec2) / (np.linalg.norm(vec1)*np.linalg.norm(vec2))
+
+def find_related(user_text, review):
+    tokens = list(set(word_tokenize(review)))
+    tokens = [w.lower() for w in tokens if not w.lower() in stop_words and w.isalpha()]
+    scores = []
+    for token in tokens:
+        scores.append(word2vec_sim(user_text,token))
+    arg_sort = np.argsort(scores)
+    arg_sort = np.flip(arg_sort)
+    return [tokens[i] for i in arg_sort[:3]]
 
 #returns 1 if positive review, 0 if neutrial, -1 if negative 
 def sentiment_analysis(text):
@@ -89,7 +97,7 @@ def sql_search(user_input):
     SELECT name, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
     WHERE locality = '%s'
-    GROUP BY name
+    GROUP BY name, locality, review_text
     HAVING
         AVG(cleanliness) >= '%s' AND
         AVG(service) >= '%s' AND
@@ -105,15 +113,16 @@ def sql_search(user_input):
     keys = ["name", "service", "cleanliness", "value", "locality", "review_text"]
     data = mysql_engine.query_selector(query_sql)
     dataset = [dict(zip(keys, i)) for i in data]
-    jacc_scores = []
+   
+    sim_scores = []
     for rev in dataset: 
         score = word2vec_sim(user_input["text"], rev['review_text'])
-        
         sentiment = sentiment_analysis(rev["review_text"])
         rev['sentiment'] = sentiment
-
-        jacc_scores.append(score)
-    arg_sort = np.argsort(jacc_scores)
+        rev['score'] = round(score,2)
+        rev['related_words'] = find_related(user_input['text'],rev['review_text'])
+        sim_scores.append(score)
+    arg_sort = np.argsort(sim_scores)
     arg_sort = np.flip(arg_sort)
     return [dataset[i] for i in arg_sort]
 
