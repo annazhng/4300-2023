@@ -94,7 +94,7 @@
             <p class="pt-3"><button id="submitButton" form=inputValues type="submit">Submit</button></p>
         </div>
 
-        <div class="resultsContainer">
+        <div class="resultsContainer" id="resultsContainer">
             {% if valid_form %}
             <b class="resultText"> Locality: {{ locality }} |
                 Service: {{ service }} |
@@ -109,11 +109,12 @@
             {% for hotel_info in output %}
             <div class="hotelCard">
                 <b class="resultText"> Hotel: {{ hotel_info['name'] }} </b>
+                <p class="resultText"> Score: {{ hotel_info['score'] }}</p>
                 <p class="resultText"> Service: {{ hotel_info['service'] }} </p>
                 <p class="resultText"> Cleanliness: {{ hotel_info['cleanliness'] }} </p>
                 <p class="resultText"> Value: {{ hotel_info['value'] }} </p>
                 <p class="resultText"> Locality: {{ hotel_info['locality'] }} </p>
-                <p class="resultText"> Review: {{ hotel_info['review_text'] }} </p>
+                <p class="resultText" id="reviewText"> Review: {{ hotel_info['review_text'] }} </p>
                 {% if hotel_info['sentiment'] == -1 %}
                 <img src="../static/images/frown.png" class="frownImage" />
                 {% elif hotel_info['sentiment'] == 0 %}
@@ -128,6 +129,4 @@
         </div>
     </div>
     </div>
-</body>
-</div>
 </body>

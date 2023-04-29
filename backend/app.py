@@ -122,6 +122,13 @@ def sql_search(user_input):
         rev['score'] = round(score,2)
         rev['related_words'] = find_related(user_input['text'],rev['review_text'])
         sim_scores.append(score)
+    for rev in dataset:
+        review_list = rev['review_text'].split()
+        for related in rev['related_words']:
+            indices = [i for i, word in enumerate(review_list) if word == related]
+            for i in indices:
+                review_list[i] = review_list[i].upper()
+        rev['review_text'] = " ".join(review_list)
     arg_sort = np.argsort(sim_scores)
     arg_sort = np.flip(arg_sort)
     return [dataset[i] for i in arg_sort]
