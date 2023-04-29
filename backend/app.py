@@ -94,7 +94,7 @@ def sentiment_analysis(text):
 
 def sql_search(user_input):
     query_sql = f"""
-    SELECT name, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
+    SELECT name, id, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
     WHERE locality = '%s'
     GROUP BY name, locality, review_text
@@ -110,7 +110,7 @@ def sql_search(user_input):
         user_input["service"],
         user_input["value"]
     )
-    keys = ["name", "service", "cleanliness", "value", "locality", "review_text"]
+    keys = ["name", "id", "service", "cleanliness", "value", "locality", "review_text"]
     data = mysql_engine.query_selector(query_sql)
     dataset = [dict(zip(keys, i)) for i in data]
    
@@ -129,6 +129,10 @@ def sql_search(user_input):
             for i in indices:
                 review_list[i] = review_list[i].upper()
         rev['review_text'] = " ".join(review_list)
+    for rev in dataset:
+        for i, word in enumerate(rev['related_words']):
+            rev['related_words'][i] = word.upper()
+        print(rev['related_words'][0])
     arg_sort = np.argsort(sim_scores)
     arg_sort = np.flip(arg_sort)
     return [dataset[i] for i in arg_sort]
@@ -144,6 +148,7 @@ def home():
     valid_form = service and cleanliness and value
     output = ''
     outputLen = 0
+    descriptors = 1
     if valid_form:
         user_input = {'cleanliness': cleanliness, 'service': service,
                       'value': value, 'locality': locality, 'text': text}
@@ -151,8 +156,9 @@ def home():
         outputLen = len(output)
         if text == '':
             text = 'None'
+            descriptors = 0
     return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality,
-                           valid_form=valid_form, output=output, text=text, outputLen=outputLen)
+                           valid_form=valid_form, output=output, text=text, outputLen=outputLen, descriptors=descriptors)
 
 
 # enter mysql shell

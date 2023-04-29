@@ -106,6 +106,10 @@
             </p>
             <img src="../static/images/frown.png" class="frownImage" />
             {% else %}
+            {% if descriptors != 0 %}
+            <p class="resultText"> Note: The three most related words to your descriptors are in red for each review.
+            </p>
+            {% endif %}
             {% for hotel_info in output %}
             <div class="hotelCard">
                 <b class="resultText"> Hotel: {{ hotel_info['name'] }} </b>
@@ -114,7 +118,19 @@
                 <p class="resultText"> Cleanliness: {{ hotel_info['cleanliness'] }} </p>
                 <p class="resultText"> Value: {{ hotel_info['value'] }} </p>
                 <p class="resultText"> Locality: {{ hotel_info['locality'] }} </p>
-                <p class="resultText" id="reviewText"> Review: {{ hotel_info['review_text'] }} </p>
+                <p class="resultText" id="{{ hotel_info['id'] }}"></p>
+                <script>
+                    var review = "{{ hotel_info['review_text'] }}";
+                    var related = "{{ hotel_info['related_words'] }}";
+                    var related_words = related.split(",");
+                    related_words[0] = related_words[0].slice(6, -5)
+                    related_words[1] = related_words[1].slice(6, -5)
+                    related_words[2] = related_words[2].slice(6, -6)
+                    related_words.forEach(word => {
+                        review = review.replaceAll(word, '<relevant>' + word + '</relevant>');
+                    });
+                    document.getElementById("{{ hotel_info['id']}}").innerHTML = review;
+                </script>
                 {% if hotel_info['sentiment'] == -1 %}
                 <img src="../static/images/frown.png" class="frownImage" />
                 {% elif hotel_info['sentiment'] == 0 %}
