@@ -32,6 +32,22 @@ class MySQLDatabaseHandler(object):
         conn = self.lease_connection()
         with open(json_file_path, 'r') as f:
             data = json.load(f)
+        conn.execute(f'CREATE DATABASE IF NOT EXISTS hotels')
+        conn.execute(f'USE hotels')
+        conn.execute(f'DROP TABLE IF EXISTS hotel_reviews')
+        conn.execute(f'''CREATE TABLE hotel_reviews ( 
+            `id` int DEFAULT NULL,
+            `name` varchar(255) DEFAULT NULL,
+            `hotel_class` float DEFAULT NULL,
+            `region` varchar(255) DEFAULT NULL,
+            `street_address` varchar(255) DEFAULT NULL,
+            `postal_code` varchar(10) DEFAULT NULL,
+            `locality` varchar(255) DEFAULT NULL,
+            `service` float DEFAULT NULL,
+            `cleanliness` float DEFAULT NULL,
+            `value` float DEFAULT NULL,
+            `review_text` text
+            )''')
         for item in data:
             item = {k: v if v != '' else None for k, v in item.items()}
             insert_query = text(f"INSERT INTO {table_name} (name, hotel_class, region, street_address, postal_code, \
@@ -51,6 +67,7 @@ class MySQLDatabaseHandler(object):
 
     def query_selector(self, query):
         conn = self.lease_connection()
+        conn.execute(f'USE hotels')
         data = conn.execute(query)
         return data
 
