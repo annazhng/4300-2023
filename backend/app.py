@@ -145,8 +145,9 @@ def home():
     value = request.args.get('value')
     locality = request.args.get('locality')
     text = request.args.get('text')
-    valid_form = service and cleanliness and value
+    valid_form = service and cleanliness and value and text
     output = ''
+    message = ''
     outputLen = 0
     descriptors = 1
     if valid_form:
@@ -157,8 +158,12 @@ def home():
         if text == '':
             text = 'None'
             descriptors = 0
+    else:
+        if service or cleanliness or value or text:
+            message = 'Please fill out all fields.'
     return render_template('base.html', service=service, cleanliness=cleanliness, value=value, locality=locality,
-                           valid_form=valid_form, output=output, text=text, outputLen=outputLen, descriptors=descriptors)
+                           valid_form=valid_form, output=output, text=text, outputLen=outputLen, descriptors=descriptors,
+                           message=message)
 
 
 # enter mysql shell
