@@ -23,6 +23,7 @@ def txt_to_json(file, output):
 
 
 def merge_jsons():
+    dict_localities = {'New York City': 0, 'Houston': 0, 'Los Angeles': 0, 'Chicago': 0}
     open('merged_data.json', 'w').close()
     with open('hotels.json') as f:
         hotels_data = json.load(f)
@@ -31,8 +32,10 @@ def merge_jsons():
     merged_data = []
     for hotel in hotels_data:
         for review in reviews_data:
-            if hotel['id'] == review['offering_id']:
-                merged_data.append({**hotel, **review})
+            if hotel['id'] == review['offering_id'] and hotel['address']['locality'] in dict_localities.keys():
+                if dict_localities[hotel['address']['locality']] < 1500:
+                    merged_data.append({**hotel, **review})
+                    dict_localities[hotel['address']['locality']] += 1
     with open('merged_data.json', 'w') as f:
         json.dump(merged_data, f)
     f.close()
@@ -93,7 +96,6 @@ def keep_relevant_fields():
         #             new_data['hotel_class'] = -1.0
         if len(new_data) == 11:  # check if the new_data dictionary has all fields before appending
             relevant_data.append(new_data)
-
     with open("relevant_fields.json", "w") as file:
         json.dump(relevant_data, file)
     file.close()
