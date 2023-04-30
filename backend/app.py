@@ -132,7 +132,6 @@ def sql_search(user_input):
     for rev in dataset:
         for i, word in enumerate(rev['related_words']):
             rev['related_words'][i] = word.upper()
-        print(rev['related_words'][0])
     arg_sort = np.argsort(sim_scores)
     arg_sort = np.flip(arg_sort)
     return [dataset[i] for i in arg_sort]
