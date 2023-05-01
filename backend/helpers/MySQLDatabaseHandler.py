@@ -34,7 +34,7 @@ class MySQLDatabaseHandler(object):
             data = json.load(f)
         conn.execute(f'CREATE DATABASE IF NOT EXISTS hotels')
         conn.execute(f'USE hotels')
-        conn.execute(f'DROP TABLE IF EXISTS hotel_reviews')
+        conn.execute(f'DROP TABLE IF EXISTS {table_name}')
         conn.execute(f'''CREATE TABLE hotel_reviews ( 
             `id` int DEFAULT NULL,
             `name` varchar(255) DEFAULT NULL,
@@ -67,7 +67,7 @@ class MySQLDatabaseHandler(object):
 
     def query_selector(self, query):
         conn = self.lease_connection()
-        conn.execute(f'USE hotels')
+        conn.execute(f'USE {self.MYSQL_DATABASE}')
         data = conn.execute(query)
         return data
 

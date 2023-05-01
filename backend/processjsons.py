@@ -2,8 +2,8 @@ import json
 
 
 def main():
-    txt_to_json('hotels.txt', 'hotels.json')
-    txt_to_json('reviews.txt', 'reviews.json')
+    '''txt_to_json('hotels.txt', 'hotels.json')'''
+    '''txt_to_json('reviews.txt', 'reviews.json')'''
     merge_jsons()
     keep_relevant_fields()
 
@@ -33,7 +33,7 @@ def merge_jsons():
     for hotel in hotels_data:
         for review in reviews_data:
             if hotel['id'] == review['offering_id'] and hotel['address']['locality'] in dict_localities.keys():
-                if dict_localities[hotel['address']['locality']] < 1500:
+                if dict_localities[hotel['address']['locality']] < 5000:
                     merged_data.append({**hotel, **review})
                     dict_localities[hotel['address']['locality']] += 1
     with open('merged_data.json', 'w') as f:

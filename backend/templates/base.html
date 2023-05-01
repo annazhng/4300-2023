@@ -57,6 +57,13 @@
         top: 18px;
         left: 20px;
     }
+
+    .inputBox {
+        padding: 6px;
+        margin-top: 8px;
+        margin-right: 16px;
+        font-size: 17px;
+    }
 </style>
 
 <body style="background-color:#E8FAFF;">
@@ -81,11 +88,14 @@
                     <option value="Chicago">Chicago</option>
                 </select>
                 <p style="font-family: Lucida Console, Monaco, monospace;">Please enter your minimum prefrences:</p>
-                <input id="preferences" type="number" step="0.01" min="0" max="5" name="service" placeholder="Service">
-                <input id="preferences" type="number" step="0.01" min="0" max="5" name="clean"
+                <input class="inputBox" id="preferences" type="number" step="0.01" min="0" max="5" name="service"
+                    placeholder="Service">
+                <input class="inputBox" id="preferences" type="number" step="0.01" min="0" max="5" name="clean"
                     placeholder="Cleanliness">
-                <input id="preferences" type="number" step="0.01" min="0" max="5" name="value" placeholder="Value">
-                <p style="font-family: Lucida Console, Monaco, monospace" ;>Description: <input type="text" name="text">
+                <input class="inputBox" id="preferences" type="number" step="0.01" min="0" max="5" name="value"
+                    placeholder="Value">
+                <p style="font-family: Lucida Console, Monaco, monospace" ;>Description: <input class="inputBox"
+                        type="text" name="text">
                 </p>
             </div>
         </form>
