@@ -97,7 +97,7 @@ def sql_search(user_input):
     SELECT name, id, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
     WHERE locality = '%s'
-    GROUP BY name
+    GROUP BY name, locality, review_text
     HAVING
         AVG(cleanliness) >= '%s' AND
         AVG(service) >= '%s' AND
@@ -134,7 +134,7 @@ def sql_search(user_input):
             rev['related_words'][i] = word.upper()
     arg_sort = np.argsort(sim_scores)
     arg_sort = np.flip(arg_sort)
-    return [dataset[i] for i in arg_sort][:10]
+    return [dataset[i] for i in arg_sort]
 
 
 @app.route("/", methods=['GET'])
