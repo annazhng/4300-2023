@@ -134,7 +134,7 @@ def sql_search(user_input):
             rev['related_words'][i] = word.upper()
     arg_sort = np.argsort(sim_scores)
     arg_sort = np.flip(arg_sort)
-    return [dataset[i] for i in arg_sort]
+    return [dataset[i] for i in arg_sort][:10]
 
 
 @app.route("/", methods=['GET'])
