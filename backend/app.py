@@ -97,7 +97,7 @@ def sql_search(user_input):
     SELECT name, id, round(avg(service), 2), round(avg(cleanliness), 2), round(avg(value), 2), locality, review_text
     FROM hotel_reviews
     WHERE locality = '%s'
-    GROUP BY name, locality, review_text
+    GROUP BY name
     HAVING
         AVG(cleanliness) >= '%s' AND
         AVG(service) >= '%s' AND
