@@ -2,8 +2,8 @@ import json
 
 
 def main():
-    '''txt_to_json('hotels.txt', 'hotels.json')'''
-    '''txt_to_json('reviews.txt', 'reviews.json')'''
+    txt_to_json('hotels.txt', 'hotels.json')
+    txt_to_json('reviews.txt', 'reviews.json')
     merge_jsons()
     keep_relevant_fields()
 
@@ -23,7 +23,8 @@ def txt_to_json(file, output):
 
 
 def merge_jsons():
-    dict_localities = {'New York City': 0, 'Houston': 0, 'Los Angeles': 0, 'Chicago': 0}
+    localities_dict = {'New York City': 0, 'Houston': 0, 'Los Angeles': 0, 'Chicago': 0}
+    name_dict = {}
     open('merged_data.json', 'w').close()
     with open('hotels.json') as f:
         hotels_data = json.load(f)
@@ -32,10 +33,16 @@ def merge_jsons():
     merged_data = []
     for hotel in hotels_data:
         for review in reviews_data:
-            if hotel['id'] == review['offering_id'] and hotel['address']['locality'] in dict_localities.keys():
-                if dict_localities[hotel['address']['locality']] < 5000:
-                    merged_data.append({**hotel, **review})
-                    dict_localities[hotel['address']['locality']] += 1
+            if hotel['id'] == review['offering_id']:
+                if hotel['address']['locality'] in localities_dict.keys() and localities_dict[hotel['address']['locality']] < 5000:
+                    if hotel['name'] not in name_dict.keys():
+                        merged_data.append({**hotel, **review})
+                        name_dict[hotel['name']] = 1
+                        localities_dict[hotel['address']['locality']] += 1
+                    elif name_dict[hotel['name']] < 50:
+                        merged_data.append({**hotel, **review})
+                        name_dict[hotel['name']] += 1
+                        localities_dict[hotel['address']['locality']] += 1
     with open('merged_data.json', 'w') as f:
         json.dump(merged_data, f)
     f.close()
